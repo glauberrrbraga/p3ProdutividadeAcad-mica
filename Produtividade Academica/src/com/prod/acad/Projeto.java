@@ -4,28 +4,30 @@ import java.util.ArrayList;
 
 public class Projeto {
 	private String titulo;
-	private String financiadora;
-	private double valorFinanciado;
-	private String descricao;
-	private String objetivo;
-	private String status;
 	private String dataInicio;
 	private String dataTermino;
-	ArrayList<Colaborador> participantes = new ArrayList<Colaborador>();
-
-	public void setNomeParticipante(String nome, String email) {
-		Colaborador aux = new Colaborador();
-		aux.setNome(nome);
-		aux.setEmail(email);
-		participantes.add(aux);
-	}
-
-	public ArrayList<Colaborador> getParticipantes() {
-		return participantes;
-	}
+	private String financiadora;
+	private double valorFinanciado;
+	private String objetivo;
+	private String descricao;
+	private String status;
+	ArrayList<Professor> profParticipantes; //Deve ter no mínimo 1
+	ArrayList<Estudante> estParticipantes; //Pode ter varios
+	ArrayList<Publicacoes> publicacoes; //Deve ter pelo menos uma pra poder mudar o status pra concluido
+	//Dentro de cada projeto tem um arraylist contendo os colaboradores
 
 	public Projeto() {
 		this.status = "Em Elaboração";
+		estParticipantes = new ArrayList<Estudante>();
+		profParticipantes = new ArrayList<Professor>();
+		publicacoes = new ArrayList<Publicacoes>();
+	}
+	
+	public void addEstudante(ArrayList<Estudante> est) {		
+		estParticipantes.addAll(est);
+	}
+	public void addProfessor(ArrayList<Professor> prof) {		
+		profParticipantes.addAll(prof);
 	}
 
 	public String getDataInicio() {
