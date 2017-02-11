@@ -10,12 +10,18 @@ public class Main {
 		Projeto[] projetos = new Projeto[100];
 		String nome, email, aux;
 		int quant = 0;
+		ArrayList<Professor> professores = new ArrayList<Professor>(); //Tem que salvar uma copia de todos os colaboradores participantes
+		ArrayList<Estudante> estudantes = new ArrayList<Estudante>();
+		ArrayList<Publicacoes> publicacoes = new ArrayList<Publicacoes>();
+		
+
+
 		
 		Scanner user = new Scanner(System.in);
 
 		while (opcao != 12) {
 			System.out.println("Digite a opção desejada: ");
-			System.out.println("1: Adicionar um Projeto\n2: Associar Colaboradores a Projetos\n3: Consulta");	
+			System.out.println("1: Adicionar um Projeto\n2: Associar Colaboradores ao sistema\n3: Associar colaboradores a projetos\n4: Consulta de colaboradores");	
 			opcao = user.nextInt();
 			switch(opcao){			
 			case 1:
@@ -40,23 +46,43 @@ public class Main {
 				System.out.print("Nenhum aluno/professor foi associado ao projeto.");
 				break;
 			case 2:
-				System.out.println("Associar um colaborador.\n 1: Professor; 2: Estudante");
-				System.out.println("Por enquanto, o sistema só é capaz de associar colaboradores no primeiro projeto.");
+				System.out.println("Adicionar um colaborador.\n 1: Professor; 2: Estudante");
 				opcao = user.nextInt();
 				if(opcao == 1){
+					Professor prof = new Professor();
+					
 					System.out.println("Adicionar um professor");
-					projetos[quant].addProfessor();	
+					System.out.print("Digite o nome: ");		
+					prof.setNome(user.nextLine());
+					prof.setNome(user.nextLine());
+					System.out.print("Digite o email do professor: ");
+					prof.setEmail(user.nextLine());
+					System.out.println("A adição de orientandos é realizada em outra opção.");
+					professores.add(prof);					
 				}else if(opcao == 2){
+					Estudante estu = new Estudante();
 					System.out.println("Adicionar um estudante");
-					projetos[quant].addEstudante();	
+					System.out.print("Digite o nome: ");		
+					estu.setNome(user.nextLine());
+					estu.setNome(user.nextLine());
+					System.out.print("Digite o email: ");
+					estu.setEmail(user.nextLine());
+					System.out.print("Digite o curso: ");
+					estu.setCurso(user.nextLine());	
+					estudantes.add(estu);
 				}
 				
 				break;
-			
-			
 			case 3:
-				System.out.println("Consulta.\n1: Consulta de Projetos\n2: Consulta de Colaboradores");
-				System.out.println("Por enquanto, o sistema só é capaz de fazer consulta no primeiro projeto.");
+				System.out.println("Associar um colaborador a um projeto.");
+				System.out.println("Essa opcão ainda nao esta disponivel.");
+				break;
+			
+			
+			case 5:
+				
+				
+				System.out.println("Consulta.\n\nPor enquanto, o sistema só é capaz de fazer consulta no primeiro projeto.\n");
 				System.out.println("Titulo do Projeto: " + projetos[quant].getTitulo());
 				System.out.println("Inicio do Projeto: " + projetos[quant].getDataInicio());
 				System.out.println("Termino do Projeto: " + projetos[quant].getDataTermino());
@@ -68,6 +94,22 @@ public class Main {
 				for(int i = 0; i < projetos[quant].getProfParticipantes().size(); i++){
 					System.out.println("Nome: " + projetos[quant].getProfParticipantes().get(i).getNome() + "\nEmail: " + projetos[quant].getProfParticipantes().get(i).getEmail() );
 				}
+				System.out.println("Alunos participantes desse projeto:");
+				for(int i = 0; i < projetos[quant].getEstParticipantes().size(); i++){
+					System.out.println("Nome: " + projetos[quant].getEstParticipantes().get(i).getNome() + "\nEmail: " + projetos[quant].getEstParticipantes().get(i).getEmail() );
+				}
+				break;
+			case 4:
+				System.out.println("Colaboradores no sistema.");
+				System.out.println("Estudantes:");
+				for(int i = 0; i < estudantes.size(); i++){
+					System.out.println("Nome: " + estudantes.get(i).getNome() + "\nEmail: " + estudantes.get(i).getEmail() );					
+				}
+				System.out.println("Professores:");
+				for(int i = 0; i < professores.size(); i++){
+					System.out.println("Nome: " + professores.get(i).getNome() + "\nEmail: " + professores.get(i).getEmail() );					
+				}
+				
 				break;
 
 		}

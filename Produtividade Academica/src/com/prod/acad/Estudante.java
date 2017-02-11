@@ -2,18 +2,19 @@ package com.prod.acad;
 
 public class Estudante extends Colaborador {
 	private String curso;
-	private short numeroProjetos;
+	private int numeroProjetos;
 
-	public short getNumeroProjetos() {
+	public int getNumeroProjetos() {
 		return numeroProjetos;
 	}
 
-	public void setNumeroProjetos(short numeroProjetos) {
-		if (this.numeroProjetos == 2) {
+	public int setNumeroProjetos() {
+		this.numeroProjetos++;
+		if (this.numeroProjetos >= 2) {
 			System.out.println("O colaborador não pode fazer parte de mais um projeto");
-		} else {
-			this.numeroProjetos++;
-		}
+			this.numeroProjetos--;
+			return 0;
+		} else return 1;
 	}
 
 	public String getCurso() {

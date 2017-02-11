@@ -26,23 +26,29 @@ public class Projeto {
 		publicacoes = new ArrayList<Publicacoes>();
 	}
 	
-	public void addEstudante() {		
+	public Estudante addEstudante() {		
 		Estudante estu = new Estudante();
 		System.out.print("Digite o nome: ");		
 		estu.setNome(user.nextLine());
 		System.out.print("Digite o email: ");
 		estu.setEmail(user.nextLine());
-		System.out.println("A adição de orientandos é realizada em outra opção.");
+		System.out.print("Digite o curso: ");
+		estu.setCurso(user.nextLine());
+		if(estu.setNumeroProjetos() == 0){
+			System.out.println("Nao é possivel adicionar esse estudante");
+		}
+		
+		
 		this.estParticipantes.add(estu);
+		return estu; //Retorna um estudante pra adicionar no arraylist da main
 	}
-	public void addProfessor() {	
-		Professor prof = new Professor();
-		System.out.print("Digite o nome: ");		
-		prof.setNome(user.nextLine());
-		System.out.print("Digite o email do professor: ");
-		prof.setEmail(user.nextLine());
-		System.out.println("A adição de orientandos é realizada em outra opção.");
+	public ArrayList<Estudante> getEstParticipantes() {
+		return estParticipantes;
+	}
+
+	public void addProfessor(Professor prof) {
 		this.profParticipantes.add(prof);
+		
 	}
 
 	public ArrayList<Professor> getProfParticipantes() {
