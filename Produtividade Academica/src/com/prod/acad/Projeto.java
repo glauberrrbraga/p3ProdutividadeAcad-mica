@@ -1,6 +1,7 @@
 package com.prod.acad;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Projeto {
 	private String titulo;
@@ -11,6 +12,7 @@ public class Projeto {
 	private String objetivo;
 	private String descricao;
 	private String status;
+	Scanner user = new Scanner(System.in);
 	ArrayList<Professor> profParticipantes; //Deve ter no mínimo 1
 	ArrayList<Estudante> estParticipantes; //Pode ter varios
 	ArrayList<Publicacoes> publicacoes; //Deve ter pelo menos uma pra poder mudar o status pra concluido
@@ -18,16 +20,33 @@ public class Projeto {
 
 	public Projeto() {
 		this.status = "Em Elaboração";
+		System.out.println("Status: " + this.status);
 		estParticipantes = new ArrayList<Estudante>();
 		profParticipantes = new ArrayList<Professor>();
 		publicacoes = new ArrayList<Publicacoes>();
 	}
 	
-	public void addEstudante(ArrayList<Estudante> est) {		
-		estParticipantes.addAll(est);
+	public void addEstudante() {		
+		Estudante estu = new Estudante();
+		System.out.print("Digite o nome: ");		
+		estu.setNome(user.nextLine());
+		System.out.print("Digite o email: ");
+		estu.setEmail(user.nextLine());
+		System.out.println("A adição de orientandos é realizada em outra opção.");
+		this.estParticipantes.add(estu);
 	}
-	public void addProfessor(ArrayList<Professor> prof) {		
-		profParticipantes.addAll(prof);
+	public void addProfessor() {	
+		Professor prof = new Professor();
+		System.out.print("Digite o nome: ");		
+		prof.setNome(user.nextLine());
+		System.out.print("Digite o email do professor: ");
+		prof.setEmail(user.nextLine());
+		System.out.println("A adição de orientandos é realizada em outra opção.");
+		this.profParticipantes.add(prof);
+	}
+
+	public ArrayList<Professor> getProfParticipantes() {
+		return profParticipantes;
 	}
 
 	public String getDataInicio() {
