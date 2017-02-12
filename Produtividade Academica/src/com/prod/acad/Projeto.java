@@ -30,16 +30,7 @@ public class Projeto {
 	}
 
 	public void addEstudante(Estudante estu) {
-		if (profParticipantes.isEmpty()) {
-			System.out.println("Você precisa associar um professor antes de associar um aluno!");
-		} else {
-			if (estu.setNumeroProjetos() == 0) {
-				System.out.println("Nao é possivel adicionar esse estudante");
-			} else {
-				this.estParticipantes.add(estu);
-			}
-		}
-
+		this.estParticipantes.add(estu);
 	}
 
 	public void addProfessor(Professor prof) {
