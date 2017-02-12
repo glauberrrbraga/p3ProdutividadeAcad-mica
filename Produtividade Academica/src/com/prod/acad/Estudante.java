@@ -9,12 +9,14 @@ public class Estudante extends Colaborador {
 	}
 
 	public int setNumeroProjetos() {
-		this.numeroProjetos++;
-		if (this.numeroProjetos >= 2) {
+		
+		if (this.numeroProjetos == 2) {
 			System.out.println("O colaborador não pode fazer parte de mais um projeto");
-			this.numeroProjetos--;
 			return 0;
-		} else return 1;
+		} else{
+			this.numeroProjetos++;
+			return 1;
+		}
 	}
 
 	public String getCurso() {

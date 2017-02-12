@@ -13,42 +13,41 @@ public class Projeto {
 	private String descricao;
 	private String status;
 	Scanner user = new Scanner(System.in);
-	ArrayList<Professor> profParticipantes; //Deve ter no mínimo 1
-	ArrayList<Estudante> estParticipantes; //Pode ter varios
-	ArrayList<Publicacoes> publicacoes; //Deve ter pelo menos uma pra poder mudar o status pra concluido
-	//Dentro de cada projeto tem um arraylist contendo os colaboradores
+	ArrayList<Professor> profParticipantes; // Deve ter no mínimo 1
+	ArrayList<Estudante> estParticipantes; // Pode ter varios
+	ArrayList<Publicacoes> publicacoes; // Deve ter pelo menos uma pra poder
+										// mudar o status pra concluido
+	// Dentro de cada projeto tem um arraylist contendo os colaboradores
 
 	public Projeto() {
-		this.status = "Em Elaboração";
+		this.status = "Em Elaboração"; // Enquanto nao for adicionado um
+										// professor, o projeto vai "estar em
+										// elaboração"
 		System.out.println("Status: " + this.status);
 		estParticipantes = new ArrayList<Estudante>();
 		profParticipantes = new ArrayList<Professor>();
 		publicacoes = new ArrayList<Publicacoes>();
 	}
-	
-	public Estudante addEstudante() {		
-		Estudante estu = new Estudante();
-		System.out.print("Digite o nome: ");		
-		estu.setNome(user.nextLine());
-		System.out.print("Digite o email: ");
-		estu.setEmail(user.nextLine());
-		System.out.print("Digite o curso: ");
-		estu.setCurso(user.nextLine());
-		if(estu.setNumeroProjetos() == 0){
-			System.out.println("Nao é possivel adicionar esse estudante");
+
+	public void addEstudante(Estudante estu) {
+		if (profParticipantes.isEmpty()) {
+			System.out.println("Você precisa associar um professor antes de associar um aluno!");
+		} else {
+			if (estu.setNumeroProjetos() == 0) {
+				System.out.println("Nao é possivel adicionar esse estudante");
+			} else {
+				this.estParticipantes.add(estu);
+			}
 		}
-		
-		
-		this.estParticipantes.add(estu);
-		return estu; //Retorna um estudante pra adicionar no arraylist da main
-	}
-	public ArrayList<Estudante> getEstParticipantes() {
-		return estParticipantes;
+
 	}
 
 	public void addProfessor(Professor prof) {
 		this.profParticipantes.add(prof);
-		
+	}
+
+	public ArrayList<Estudante> getEstParticipantes() {
+		return estParticipantes;
 	}
 
 	public ArrayList<Professor> getProfParticipantes() {
