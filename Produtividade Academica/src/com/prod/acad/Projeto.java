@@ -11,6 +11,7 @@ public class Projeto {
 	private double valorFinanciado;
 	private String objetivo;
 	private String descricao;
+
 	private String status;
 	Scanner user = new Scanner(System.in);
 	ArrayList<Professor> profParticipantes; // Deve ter no mínimo 1
@@ -35,6 +36,14 @@ public class Projeto {
 
 	public void addProfessor(Professor prof) {
 		this.profParticipantes.add(prof);
+	}
+	
+	public ArrayList<Publicacoes> getPublicacoes() {
+		return publicacoes;
+	}
+	
+	public void setPublicacoes(ArrayList<Publicacoes> publicacoes) {
+		this.publicacoes = publicacoes;
 	}
 
 	public ArrayList<Estudante> getEstParticipantes() {

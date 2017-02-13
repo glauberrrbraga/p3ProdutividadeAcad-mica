@@ -64,7 +64,9 @@ public class Main {
 		projetos[quant].setObjetivo(user.nextLine());
 		System.out.print("Digite a descrição do projeto: ");
 		projetos[quant].setDescricao(user.nextLine());
-		System.out.print("Nenhum aluno/professor esta associado ao projeto.");
+		System.out.println("Nenhum aluno/professor esta associado ao projeto.");
+		System.out.println("Projeto adicionado com sucesso.");
+		System.out.println("----------------------------------------------------");
 		quant++;
 	}
 
@@ -81,62 +83,92 @@ public class Main {
 
 			opcao = user.nextInt();
 
-			System.out.print("1: Alocação de Participantes\n2: Alteração de Status\nDigite a opção desejada: ");
-			i = user.nextInt();
-			if (i == 1) {
-				if (projetos[opcao].getProfParticipantes().isEmpty() && !professores.isEmpty()) {
-					System.out.println(
-							"Não há professores associados nesse projeto.\nVocê deve adicionar um antes de adicionar um estudante");
-					listarProfs();
-					System.out.print("Digite o codigo do professor desejado: ");
-					j = user.nextInt();
-					projetos[opcao].addProfessor(professores.get(j));
-					System.out.println("Professor associado ao projeto " + projetos[opcao].getTitulo() + ".");
-				} else {
-					System.out.print("1: Alocar Professor; 2: Alocar Aluno\nDigite a opção desejada: ");
-					i = user.nextInt();
-
-					if (i == 1 && !professores.isEmpty()) {
+			if (projetos[opcao].getStatus() == "Concluido") {
+				System.out.println("Você não pode editar um projeto concluido.");
+			} else {
+				System.out.print("1: Alocação de Participantes\n2: Alteração de Status\nDigite a opção desejada: ");
+				i = user.nextInt();
+				if (i == 1) {
+					if (projetos[opcao].getProfParticipantes().isEmpty() && !professores.isEmpty()) {
+						System.out.println(
+								"Não há professores associados nesse projeto.\nVocê deve adicionar um antes de adicionar um estudante");
 						listarProfs();
+						System.out.print("Digite o codigo do professor desejado: ");
 						j = user.nextInt();
-						if(projetos[opcao].getProfParticipantes().contains(professores.get(j))){
-							System.out.println("Esse professor já esta alocado neste projeto");
-						}else{
-							projetos[opcao].addProfessor(professores.get(j));
-							System.out.println("Professor associado ao projeto " + projetos[opcao].getTitulo() + ".");							
-						}
-					} else if (i == 1 && professores.isEmpty()) {
-						System.out.println("Não há professores cadastrados.");
-					} else if (i == 2 && !estudantes.isEmpty()) {
-						listarEstu();
-						j = user.nextInt();
-						if(projetos[opcao].getEstParticipantes().contains(estudantes.get(j))){
-							System.out.println("Esse estudante já esta alocado neste projeto.");
-						}else{
-							
-							if (estudantes.get(j).getNumeroProjetos() == 2) {
-								System.out.println("Esse estudante não pode fazer parte de mais de 2 projetos.");
-							} else {
-								projetos[opcao].addEstudante(estudantes.get(j));
-								estudantes.get(j).setNumeroProjetos();
-								System.out.println("Estudante associado ao projeto " + projetos[opcao].getTitulo() + ".");
-							}
-						}
-						
+						projetos[opcao].addProfessor(professores.get(j));
+						System.out.println("Professor associado ao projeto " + projetos[opcao].getTitulo() + ".");
+					} else {
+						System.out.print("1: Alocar Professor; 2: Alocar Aluno\nDigite a opção desejada: ");
+						i = user.nextInt();
 
-					} else if (i == 2 && estudantes.isEmpty()) {
-						System.out.println("Não há estudantes cadastrados.");
+						if (i == 1 && !professores.isEmpty()) {
+							listarProfs();
+							j = user.nextInt();
+							if (projetos[opcao].getProfParticipantes().contains(professores.get(j))) {
+								System.out.println("Esse professor já esta alocado neste projeto");
+							} else {
+								projetos[opcao].addProfessor(professores.get(j));
+								System.out
+										.println("Professor associado ao projeto " + projetos[opcao].getTitulo() + ".");
+							}
+						} else if (i == 1 && professores.isEmpty()) {
+							System.out.println("Não há professores cadastrados.");
+						} else if (i == 2 && !estudantes.isEmpty()) {
+							listarEstu();
+							j = user.nextInt();
+							if (projetos[opcao].getEstParticipantes().contains(estudantes.get(j))) {
+								System.out.println("Esse estudante já esta alocado neste projeto.");
+							} else {
+
+								if (estudantes.get(j).getNumeroProjetos() == 2) {
+									System.out.println("Esse estudante não pode fazer parte de mais de 2 projetos.");
+								} else {
+									projetos[opcao].addEstudante(estudantes.get(j));
+									estudantes.get(j).setNumeroProjetos();
+									System.out.println(
+											"Estudante associado ao projeto " + projetos[opcao].getTitulo() + ".");
+								}
+							}
+
+						} else if (i == 2 && estudantes.isEmpty()) {
+							System.out.println("Não há estudantes cadastrados.");
+						}
 					}
+				} else if (i == 2) {
+					System.out.println("Alteração de status:");
+					if (!projetos[opcao].getEstParticipantes().isEmpty()
+							&& !projetos[opcao].getProfParticipantes().isEmpty() && projetos[opcao].getStatus() != "Em Andamento") {
+						System.out.println("Status atual: " + projetos[opcao].getStatus());
+						System.out.println("Status alterado para 'Em Andamento'");
+						projetos[opcao].setStatus("Em Andamento");
+					} else if (projetos[opcao].getEstParticipantes().isEmpty()
+							&& !projetos[opcao].getProfParticipantes().isEmpty()) {
+						System.out.println(
+								"Você não pode alterar o status sem antes adicionar um estudante colaborador.");
+					} else if (projetos[opcao].getEstParticipantes().isEmpty()
+							&& projetos[opcao].getProfParticipantes().isEmpty()) {
+						System.out.println("Status atual: " + projetos[opcao].getStatus());
+						System.out.println(
+								"Você não pode alterar o status sem antes adicionar um professor e/ou estudante como colaborador.");
+					} else if (projetos[opcao].getPublicacoes().isEmpty()
+							&& projetos[opcao].getStatus() == "Em Andamento") {
+						System.out.println("Status atual: " + projetos[opcao].getStatus());
+						System.out.println(
+								"Você não pode alterar para 'Concluido', não há publicações associadas a esse projeto.");
+					} else if (!projetos[opcao].getPublicacoes().isEmpty()
+							&& projetos[opcao].getStatus() == "Em Andamento") {
+						System.out.println("Status atual: " + projetos[opcao].getStatus());
+						System.out.println("Status alterado para 'Concluido'");
+						projetos[opcao].setStatus("Concluido");
+						System.out.println("Você não pode mais fazer alterações nesse projeto.");
+					}
+
 				}
-			}else if(i == 2){
-				System.out.println("Alteração de status:");
-				if(!projetos[opcao].getEstParticipantes().isEmpty() && !projetos[opcao].getProfParticipantes().isEmpty()){
-					System.out.println("Status atual: " + projetos[opcao].getStatus());
-					System.out.println("Status alterado para 'Em Andamento'");
-				}
+
 			}
 
 		}
+
 
 	}
 
