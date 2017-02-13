@@ -5,28 +5,62 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static int listarProfs() {
+	public static boolean listarProfs() {
 		if (!professores.isEmpty()) {
 			System.out.println("Lista de professores cadastrados: ");
 			for (i = 0; i < professores.size(); i++) {
 				System.out.println(i + ": " + professores.get(i).getNome());
 			}
-			return 1;
+			return true;
 		} else {
 			System.out.println("Não há professores cadastrados");
-			return 0;
+			return false;
 		}
 	}
 
-	public static int listarEstu() {
+	public static boolean listarEstu() {
 		if (!estudantes.isEmpty()) {
 			for (i = 0; i < estudantes.size(); i++) {
 				System.out.println(i + ": " + estudantes.get(i).getNome());
 			}
-			return 1;
+			return true;
 		} else {
 			System.out.println("Não há estudantes cadastrados");
-			return 0;
+			return false;
+		}
+	}
+	
+	public static void projDetalhados(){
+		for (i = 0; i < quant; i++) {
+			System.out.println("Titulo: " + projetos[i].getTitulo());
+			System.out.println("Inicio: " + projetos[i].getDataInicio());
+			System.out.println("Termino: " + projetos[i].getDataTermino());
+			System.out.println("Agencia financiadora: " + projetos[i].getFinanciadora());
+			System.out.println("Valor Financiado: " + projetos[i].getValorFinanciado());
+			System.out.println("Objetivo: " + projetos[i].getObjetivo());
+			System.out.println("Descriçao: " + projetos[i].getDescricao());
+			System.out.println("Status: " + projetos[i].getStatus());
+			if (projetos[i].getEstParticipantes().isEmpty()) {
+				System.out.println("Não há estudantes cadastrados nesse projeto.");
+			} else {
+				System.out.println("Estudantes cadastrados no projeto:");
+				for (j = 0; j < projetos[i].getEstParticipantes().size(); j++) {
+					System.out.println("Nome: " + projetos[i].getEstParticipantes().get(j).getNome()
+							+ "\nEmail: " + projetos[i].getEstParticipantes().get(j).getEmail());
+				}
+			}
+			if (projetos[i].getProfParticipantes().isEmpty()) {
+				System.out.println("Não há professores cadastrados no projeto.");
+			} else {
+
+				System.out.println("Professores cadastrados desse projeto:");
+				for (j = 0; j < projetos[i].getProfParticipantes().size(); j++) {
+					System.out.println("Nome: " + projetos[i].getProfParticipantes().get(j).getNome()
+							+ "\nEmail: " + projetos[i].getProfParticipantes().get(j).getEmail());
+				}
+			}
+			System.out.println(
+					"---------------------------------------------------------------------------------\n");
 		}
 	}
 
@@ -86,7 +120,7 @@ public class Main {
 			if (projetos[opcao].getStatus() == "Concluido") {
 				System.out.println("Você não pode editar um projeto concluido.");
 			} else {
-				System.out.print("1: Alocação de Participantes\n2: Alteração de Status\nDigite a opção desejada: ");
+				System.out.print("1: Alocação de Participantes\n2: Alteração de Status\n3:Associar uma publicação\nDigite a opção desejada: ");
 				i = user.nextInt();
 				if (i == 1) {
 					if (projetos[opcao].getProfParticipantes().isEmpty() && !professores.isEmpty()) {
@@ -137,7 +171,8 @@ public class Main {
 				} else if (i == 2) {
 					System.out.println("Alteração de status:");
 					if (!projetos[opcao].getEstParticipantes().isEmpty()
-							&& !projetos[opcao].getProfParticipantes().isEmpty() && projetos[opcao].getStatus() != "Em Andamento") {
+							&& !projetos[opcao].getProfParticipantes().isEmpty()
+							&& projetos[opcao].getStatus() != "Em Andamento") {
 						System.out.println("Status atual: " + projetos[opcao].getStatus());
 						System.out.println("Status alterado para 'Em Andamento'");
 						projetos[opcao].setStatus("Em Andamento");
@@ -163,12 +198,13 @@ public class Main {
 						System.out.println("Você não pode mais fazer alterações nesse projeto.");
 					}
 
+				}else if(i == 3){
+					System.out.println("Opção ainda não disponível.");
 				}
 
 			}
 
 		}
-
 
 	}
 
@@ -199,6 +235,29 @@ public class Main {
 		}
 
 	}
+	
+	public static void adicionarPublicacao(){
+		if(!estudantes.isEmpty()){
+			Publicacoes aux = new Publicacoes();		
+			System.out.print("Título: ");
+			aux.setTitulo(user.nextLine());
+			System.out.print("Conferencia onde foi publicada: ");
+			aux.setConferencia(user.nextLine());
+			System.out.print("Ano de publicação: ");
+			aux.setAnoPublicacao(user.nextInt());
+			System.out.println("Você precisa associar um autor a essa publicação.");
+			listarEstu();
+			System.out.print("Digite o código do estudante que deseja associar: ");
+			opcao = user.nextInt();
+			aux.getAutores().add(estudantes.get(opcao));
+			System.out.println("Publicação adicionada.\nVocê poderá associar essa publicação a um projeto mais tarde.");			
+		}else{
+			System.out.println("Não há estudantes cadastrados, não é possivel adicionar uma publicação.");
+		}
+		
+		
+		
+	}
 
 	public static Projeto[] projetos = new Projeto[100];
 	public static Scanner user = new Scanner(System.in);
@@ -227,46 +286,20 @@ public class Main {
 				editarProj();
 				break;
 
-			case 5:
-
-				for (i = 0; i < quant; i++) {
-					System.out.println("Titulo do Projeto: " + projetos[i].getTitulo());
-					System.out.println("Inicio do Projeto: " + projetos[i].getDataInicio());
-					System.out.println("Termino do Projeto: " + projetos[i].getDataTermino());
-					System.out.println("Agencia financiadora: " + projetos[i].getFinanciadora());
-					System.out.println("Valor Financiado: " + projetos[i].getValorFinanciado());
-					System.out.println("Objetivo do Projeto: " + projetos[i].getObjetivo());
-					System.out.println("Descriçao do Projeto: " + projetos[i].getDescricao());
-					System.out.println("Professores participantes desse projeto:");
-
-					for (j = 0; j < projetos[i].getProfParticipantes().size(); j++) {
-						System.out.println("Nome: " + projetos[i].getProfParticipantes().get(j).getNome() + "\nEmail: "
-								+ projetos[i].getProfParticipantes().get(j).getEmail());
-					}
-					System.out.println("Alunos participantes desse projeto:");
-					for (j = 0; j < projetos[i].getEstParticipantes().size(); j++) {
-						System.out.println("Nome: " + projetos[i].getEstParticipantes().get(j).getNome() + "\nEmail: "
-								+ projetos[i].getEstParticipantes().get(j).getEmail());
-					}
-					System.out.println(
-							"---------------------------------------------------------------------------------\n");
-				}
-
-				break;
 			case 4:
 				System.out.println("Colaboradores no sistema.");
-				System.out.println("Estudantes:");
-				for (i = 0; i < estudantes.size(); i++) {
-					System.out.println(
-							i + ": " + estudantes.get(i).getNome() + "\nEmail: " + estudantes.get(i).getEmail());
-				}
-				System.out.println("Professores:");
-				for (i = 0; i < professores.size(); i++) {
-					System.out.println(
-							i + ": " + professores.get(i).getNome() + "\nEmail: " + professores.get(i).getEmail());
-				}
-
+				listarProfs();
+				listarEstu();
 				break;
+			case 5:
+				projDetalhados();
+				break;
+			case 6:
+				System.out.println("Adicionar uma publicação");
+			default:
+				System.out.println("Opção inválida.");
+				break;
+					
 
 			}
 
