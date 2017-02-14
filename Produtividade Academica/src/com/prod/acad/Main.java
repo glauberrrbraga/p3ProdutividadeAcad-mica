@@ -82,23 +82,35 @@ public class Main {
 			if (projetos[i].getEstParticipantes().isEmpty()) {
 				System.out.println("Não há estudantes cadastrados nesse projeto.");
 			} else {
-				System.out.println("Estudantes cadastrados no projeto:");
+				System.out.println("-----Estudantes cadastrados no projeto-----");
 				for (j = 0; j < projetos[i].getEstParticipantes().size(); j++) {
 					System.out.println("Nome: " + projetos[i].getEstParticipantes().get(j).getNome() + "\nEmail: "
 							+ projetos[i].getEstParticipantes().get(j).getEmail());
 				}
+				System.out.println("-------------------------------------------");
+
 			}
 			if (projetos[i].getProfParticipantes().isEmpty()) {
 				System.out.println("Não há professores cadastrados no projeto.");
 			} else {
-
-				System.out.println("Professores cadastrados desse projeto:");
+				System.out.println("---Professores cadastrados desse projeto---");
+				
 				for (j = 0; j < projetos[i].getProfParticipantes().size(); j++) {
 					System.out.println("Nome: " + projetos[i].getProfParticipantes().get(j).getNome() + "\nEmail: "
 							+ projetos[i].getProfParticipantes().get(j).getEmail());
 				}
+				System.out.println("------------------------------------------");
+
 			}
-			System.out.println("---------------------------------------------------------------------------------\n");
+			if (projetos[i].getPublicacoes().isEmpty()) {
+				System.out.println("Não há publicações associadas a esse projeto.");
+			} else {
+				System.out.println("-----Publicações associadas ao projeto-----");
+				for (j = 0; j < projetos[i].getPublicacoes().size(); j++) {
+					System.out.println("Titulo: " + projetos[i].getPublicacoes().get(j).getTitulo());
+				}
+				System.out.println("--------------------------------------------");
+			}
 		}
 	}
 
@@ -106,7 +118,7 @@ public class Main {
 
 		System.out.println("Projetos cadastrados no momento:");
 		for (i = 0; i < quant; i++) {
-			System.out.println(i + " - Nome: " + projetos[i].getTitulo());
+			System.out.println(i + ": " + projetos[i].getTitulo());
 		}
 	}
 
@@ -159,7 +171,7 @@ public class Main {
 				System.out.println("Você não pode editar um projeto concluido.");
 			} else {
 				System.out.print(
-						"1: Alocação de Participantes\n2: Alteração de Status\n3:Associar uma publicação\nDigite a opção desejada: ");
+						"1: Alocação de Participantes\n2: Alteração de Status\n3: Associar uma publicação\nDigite a opção desejada: ");
 				i = user.nextInt();
 				if (i == 1) {
 					if (projetos[opcao].getProfParticipantes().isEmpty() && !professores.isEmpty()) {
@@ -171,7 +183,7 @@ public class Main {
 						projetos[opcao].addProfessor(professores.get(j));
 						System.out.println("Professor associado ao projeto " + projetos[opcao].getTitulo() + ".");
 					} else {
-						System.out.print("1: Alocar Professor; 2: Alocar Aluno\nDigite a opção desejada: ");
+						System.out.print("1: Alocar Professor\n2: Alocar Aluno\nDigite a opção desejada: ");
 						i = user.nextInt();
 
 						if (i == 1 && !professores.isEmpty()) {
@@ -238,7 +250,28 @@ public class Main {
 					}
 
 				} else if (i == 3) {
-					System.out.println("Opção ainda não disponível.");
+					if (!publicacoes.isEmpty()) {
+						System.out.println("Associar uma publicação a um projeto.");
+						listarPublic();
+						System.out.print("Digite o codigo da publicação que deseja associar ao projeto: ");
+						j = user.nextInt();
+						if (projetos[opcao].getPublicacoes().contains(publicacoes.get(j))) {
+							System.out.println("Essa publicação já esta associada a este projeto.");
+						} else {
+							projetos[opcao].addPublicacoes(publicacoes.get(j));
+							System.out.println("Publicação associada ao projeto com sucesso.");
+							
+							if (!projetos[opcao].getEstParticipantes().contains(publicacoes.get(j).getAutores().get(0))) {
+								System.out.println("Todos os autores da publicação agora fazem parte do projeto.");
+								projetos[opcao].addEstudante(publicacoes.get(j).getAutores().get(0));
+							}
+
+						}
+
+					} else {
+						System.out.println("Não há publicaçoes cadastradas so sistema.");
+					}
+
 				}
 
 			}
@@ -248,7 +281,7 @@ public class Main {
 	}
 
 	public static void adicionarColaborador() {
-		System.out.print("Adicionar um colaborador.\n1: Professor; 2: Estudante\nDigite a opcao desejada: ");
+		System.out.print("Adicionar um colaborador.\n1: Professor\n2: Estudante\nDigite a opcao desejada: ");
 		opcao = user.nextInt();
 		if (opcao == 1) {
 			Professor prof = new Professor();
@@ -311,11 +344,14 @@ public class Main {
 	public static void main(String[] args) {
 
 		while (opcao != 12) {
-			System.out.println("Digite a opção desejada: ");
+			System.out.println("------------------------------------------");
 			System.out.println("1: Adicionar um Projeto\n2: Associar Colaboradores ao sistema");
 			System.out.println("3: Edição de projetos de pesquisa\n4: Colaboradores cadastrados");
 			System.out.println(
 					"5: Projetos cadastrados\n6: Adicionar uma publicação\n7: Listar orientações\n8: Adicionar uma orientação");
+			System.out.print("------------------------------------------\n");
+
+			System.out.print("Digite a opção desejada: ");
 			opcao = user.nextInt();
 			switch (opcao) {
 			case 1:

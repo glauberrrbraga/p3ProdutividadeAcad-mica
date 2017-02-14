@@ -11,9 +11,9 @@ public class Projeto {
 	private String objetivo;
 	private String descricao;
 	private String status;
-	ArrayList<Professor> profParticipantes;
-	ArrayList<Estudante> estParticipantes;
-	ArrayList<Publicacoes> publicacoes;
+	private ArrayList<Professor> profParticipantes;
+	private ArrayList<Estudante> estParticipantes;
+	private ArrayList<Publicacoes> publicacoes;
 
 	public Projeto() {
 		this.status = "Em Elaboração";
@@ -35,7 +35,7 @@ public class Projeto {
 		return publicacoes;
 	}
 
-	public void setPublicacoes(Publicacoes publ) {
+	public void addPublicacoes(Publicacoes publ) {
 		this.publicacoes.add(publ);
 	}
 
