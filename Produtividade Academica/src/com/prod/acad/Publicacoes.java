@@ -10,12 +10,12 @@ public class Publicacoes {
 	private int anoPublicacao;
 	private String projetoAssociado;
 
-	void Publicacoes(){
+	Publicacoes(){
 		autores = new ArrayList<Estudante>();
 	}
 
-	public void setAutores(ArrayList<Estudante> autores) {
-		this.autores = autores;
+	public void setAutores(Estudante estud) {
+		this.autores.add(estud);
 	}
 
 	public ArrayList<Estudante> getAutores() {

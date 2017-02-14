@@ -10,7 +10,16 @@ public class Main {
 			System.out.println("Lista de professores cadastrados: ");
 			for (i = 0; i < professores.size(); i++) {
 				System.out.println(i + ": " + professores.get(i).getNome());
+
+				if (!professores.get(i).getOrientados().isEmpty()) {
+					System.out.println("Alunos orientados pelo professor;");
+					for (j = 0; j < professores.get(i).getOrientados().size(); j++) {
+						System.out.println("Nome: " + professores.get(i).getOrientados().get(j).getNome());
+
+					}
+				}
 			}
+
 			return true;
 		} else {
 			System.out.println("Não há professores cadastrados");
@@ -20,6 +29,7 @@ public class Main {
 
 	public static boolean listarEstu() {
 		if (!estudantes.isEmpty()) {
+			System.out.println("Lista de estudantes cadastrados");
 			for (i = 0; i < estudantes.size(); i++) {
 				System.out.println(i + ": " + estudantes.get(i).getNome());
 			}
@@ -29,8 +39,37 @@ public class Main {
 			return false;
 		}
 	}
-	
-	public static void projDetalhados(){
+
+	public static void listarPublic() {
+		if (!publicacoes.isEmpty()) {
+			for (i = 0; i < publicacoes.size(); i++) {
+				System.out.println(i + ": " + publicacoes.get(i).getTitulo());
+			}
+		} else {
+			System.out.println("Não há publicações cadastradas");
+		}
+	}
+
+	public static void adicionarOrien() {
+		if (!professores.isEmpty() && !estudantes.isEmpty()) {
+			System.out.println("Adicionar uma orientação");
+			listarProfs();
+			System.out.print("Digite o codigo do professor: ");
+			j = user.nextInt();
+			listarEstu();
+			System.out.print("Digite o codigo do aluno orientado: ");
+			i = user.nextInt();
+			if (professores.get(j).getOrientados().contains(estudantes.get(i))) {
+				System.out.println("Esse professor já orienta esse aluno.");
+			} else {
+				professores.get(j).setOrientados(estudantes.get(i));
+				System.out.println("Aluno associado corretamente ao professor.");
+			}
+
+		}
+	}
+
+	public static void projDetalhados() {
 		for (i = 0; i < quant; i++) {
 			System.out.println("Titulo: " + projetos[i].getTitulo());
 			System.out.println("Inicio: " + projetos[i].getDataInicio());
@@ -45,8 +84,8 @@ public class Main {
 			} else {
 				System.out.println("Estudantes cadastrados no projeto:");
 				for (j = 0; j < projetos[i].getEstParticipantes().size(); j++) {
-					System.out.println("Nome: " + projetos[i].getEstParticipantes().get(j).getNome()
-							+ "\nEmail: " + projetos[i].getEstParticipantes().get(j).getEmail());
+					System.out.println("Nome: " + projetos[i].getEstParticipantes().get(j).getNome() + "\nEmail: "
+							+ projetos[i].getEstParticipantes().get(j).getEmail());
 				}
 			}
 			if (projetos[i].getProfParticipantes().isEmpty()) {
@@ -55,12 +94,11 @@ public class Main {
 
 				System.out.println("Professores cadastrados desse projeto:");
 				for (j = 0; j < projetos[i].getProfParticipantes().size(); j++) {
-					System.out.println("Nome: " + projetos[i].getProfParticipantes().get(j).getNome()
-							+ "\nEmail: " + projetos[i].getProfParticipantes().get(j).getEmail());
+					System.out.println("Nome: " + projetos[i].getProfParticipantes().get(j).getNome() + "\nEmail: "
+							+ projetos[i].getProfParticipantes().get(j).getEmail());
 				}
 			}
-			System.out.println(
-					"---------------------------------------------------------------------------------\n");
+			System.out.println("---------------------------------------------------------------------------------\n");
 		}
 	}
 
@@ -120,7 +158,8 @@ public class Main {
 			if (projetos[opcao].getStatus() == "Concluido") {
 				System.out.println("Você não pode editar um projeto concluido.");
 			} else {
-				System.out.print("1: Alocação de Participantes\n2: Alteração de Status\n3:Associar uma publicação\nDigite a opção desejada: ");
+				System.out.print(
+						"1: Alocação de Participantes\n2: Alteração de Status\n3:Associar uma publicação\nDigite a opção desejada: ");
 				i = user.nextInt();
 				if (i == 1) {
 					if (projetos[opcao].getProfParticipantes().isEmpty() && !professores.isEmpty()) {
@@ -198,7 +237,7 @@ public class Main {
 						System.out.println("Você não pode mais fazer alterações nesse projeto.");
 					}
 
-				}else if(i == 3){
+				} else if (i == 3) {
 					System.out.println("Opção ainda não disponível.");
 				}
 
@@ -235,12 +274,15 @@ public class Main {
 		}
 
 	}
-	
-	public static void adicionarPublicacao(){
-		if(!estudantes.isEmpty()){
-			Publicacoes aux = new Publicacoes();		
+
+	public static void adicionarPublicacao() {
+		if (!estudantes.isEmpty()) {
+			System.out.println("Adicionar uma Publicação");
+			Publicacoes aux = new Publicacoes();
 			System.out.print("Título: ");
 			aux.setTitulo(user.nextLine());
+			aux.setTitulo(user.nextLine());
+
 			System.out.print("Conferencia onde foi publicada: ");
 			aux.setConferencia(user.nextLine());
 			System.out.print("Ano de publicação: ");
@@ -249,14 +291,13 @@ public class Main {
 			listarEstu();
 			System.out.print("Digite o código do estudante que deseja associar: ");
 			opcao = user.nextInt();
-			aux.getAutores().add(estudantes.get(opcao));
-			System.out.println("Publicação adicionada.\nVocê poderá associar essa publicação a um projeto mais tarde.");			
-		}else{
+			aux.setAutores(estudantes.get(opcao));
+			publicacoes.add(aux);
+			System.out.println("Publicação adicionada.\nVocê poderá associar essa publicação a um projeto mais tarde.");
+		} else {
 			System.out.println("Não há estudantes cadastrados, não é possivel adicionar uma publicação.");
 		}
-		
-		
-		
+
 	}
 
 	public static Projeto[] projetos = new Projeto[100];
@@ -273,7 +314,8 @@ public class Main {
 			System.out.println("Digite a opção desejada: ");
 			System.out.println("1: Adicionar um Projeto\n2: Associar Colaboradores ao sistema");
 			System.out.println("3: Edição de projetos de pesquisa\n4: Colaboradores cadastrados");
-			System.out.println("5: Projetos cadastrados");
+			System.out.println(
+					"5: Projetos cadastrados\n6: Adicionar uma publicação\n7: Listar orientações\n8: Adicionar uma orientação");
 			opcao = user.nextInt();
 			switch (opcao) {
 			case 1:
@@ -295,11 +337,17 @@ public class Main {
 				projDetalhados();
 				break;
 			case 6:
-				System.out.println("Adicionar uma publicação");
+				adicionarPublicacao();
+				break;
+			case 7:
+				listarPublic();
+				break;
+			case 8:
+				adicionarOrien();
+				break;
 			default:
 				System.out.println("Opção inválida.");
 				break;
-					
 
 			}
 

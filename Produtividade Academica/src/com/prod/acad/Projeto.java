@@ -1,7 +1,6 @@
 package com.prod.acad;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Projeto {
 	private String titulo;
@@ -11,19 +10,13 @@ public class Projeto {
 	private double valorFinanciado;
 	private String objetivo;
 	private String descricao;
-
 	private String status;
-	Scanner user = new Scanner(System.in);
-	ArrayList<Professor> profParticipantes; // Deve ter no mínimo 1
-	ArrayList<Estudante> estParticipantes; // Pode ter varios
-	ArrayList<Publicacoes> publicacoes; // Deve ter pelo menos uma pra poder
-										// mudar o status pra concluido
-	// Dentro de cada projeto tem um arraylist contendo os colaboradores
+	ArrayList<Professor> profParticipantes;
+	ArrayList<Estudante> estParticipantes;
+	ArrayList<Publicacoes> publicacoes;
 
 	public Projeto() {
-		this.status = "Em Elaboração"; // Enquanto nao for adicionado um
-										// professor, o projeto vai "estar em
-										// elaboração"
+		this.status = "Em Elaboração";
 		System.out.println("Status: " + this.status);
 		estParticipantes = new ArrayList<Estudante>();
 		profParticipantes = new ArrayList<Professor>();
@@ -37,13 +30,13 @@ public class Projeto {
 	public void addProfessor(Professor prof) {
 		this.profParticipantes.add(prof);
 	}
-	
+
 	public ArrayList<Publicacoes> getPublicacoes() {
 		return publicacoes;
 	}
-	
-	public void setPublicacoes(ArrayList<Publicacoes> publicacoes) {
-		this.publicacoes = publicacoes;
+
+	public void setPublicacoes(Publicacoes publ) {
+		this.publicacoes.add(publ);
 	}
 
 	public ArrayList<Estudante> getEstParticipantes() {
