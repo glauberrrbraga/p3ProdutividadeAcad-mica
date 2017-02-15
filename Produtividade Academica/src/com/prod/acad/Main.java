@@ -1,6 +1,7 @@
 package com.prod.acad;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -136,11 +137,10 @@ public class Main {
 		projetos[quant].setTitulo(user.nextLine());
 		projetos[quant].setTitulo(user.nextLine());
 		System.out.print("Digite o ano de inicio do projeto: ");
-		projetos[quant].setDataInicio(user.nextInt());
+		projetos[quant].setDataInicio(user.nextLine());
 		System.out.print("Digite o ano de termino do projeto: ");
-		projetos[quant].setDataTermino(user.nextInt());
+		projetos[quant].setDataTermino(user.nextLine());
 		System.out.print("Digite a agência financiadora do projeto: ");
-		projetos[quant].setFinanciadora(user.nextLine());
 		projetos[quant].setFinanciadora(user.nextLine());
 		System.out.print("Digite o valor financiado: ");
 		projetos[quant].setValorFinanciado(user.nextDouble());
@@ -179,7 +179,7 @@ public class Main {
 							System.out.println("Titulo: " + publicacoes.get(i).getTitulo());
 						}
 					}
-				}else{
+				} else {
 					System.out.println("Esse estudante não colaborou em nenhuma publicação");
 				}
 			}
@@ -201,35 +201,36 @@ public class Main {
 		}
 
 	}
-	public static void relatorio(){
+
+	public static void relatorio() {
 		System.out.println("Número de colaboradores: " + (estudantes.size() + professores.size()));
-		System.out.println("Número total de projetos: " + (quant + 1));
+		System.out.println("Número total de projetos: " + quant);
 		j = 0;
-		for(i = 0; i < quant; i++){
-			if(projetos[i].getStatus() == "Concluido"){
+		for (i = 0; i < quant; i++) {
+			if (projetos[i].getStatus() == "Concluido") {
 				j++;
 			}
 		}
-		System.out.println("Número de projetos concluidos: " + j);
-		
+		System.out.println("Número de projetos 'Concluido': " + j);
+
 		j = 0;
-		for(i = 0; i < quant; i++){
-			if(projetos[i].getStatus() == "Em Andamento"){
+		for (i = 0; i < quant; i++) {
+			if (projetos[i].getStatus() == "Em Andamento") {
 				j++;
 			}
 		}
 		System.out.println("Número de projetos 'Em Andamento': " + j);
-		
+
 		j = 0;
-		for(i = 0; i < quant; i++){
-			if(projetos[i].getStatus() == "Em Elaboração"){
+		for (i = 0; i < quant; i++) {
+			if (projetos[i].getStatus() == "Em Elaboração") {
 				j++;
 			}
 		}
 		System.out.println("Número de projetos 'Em Elaboração': " + j);
 
 		System.out.println("Número total de publicações academicas: " + publicacoes.size());
-		
+
 	}
 
 	public static void editarProj() {
@@ -252,14 +253,20 @@ public class Main {
 						"1: Alocação de Participantes\n2: Alteração de Status\n3: Associar uma publicação\nDigite a opção desejada: ");
 				i = user.nextInt();
 				if (i == 1) {
-					if (projetos[opcao].getProfParticipantes().isEmpty() && !professores.isEmpty()) {
-						System.out.println(
-								"Não há professores associados nesse projeto.\nVocê deve adicionar um antes de adicionar um estudante");
-						listarProfs();
-						System.out.print("Digite o codigo do professor desejado: ");
-						j = user.nextInt();
-						projetos[opcao].addProfessor(professores.get(j));
-						System.out.println("Professor associado ao projeto " + projetos[opcao].getTitulo() + ".");
+					if (projetos[opcao].getProfParticipantes().isEmpty()) {
+						if(!professores.isEmpty()){
+							System.out.println(
+									"Não há professores associados nesse projeto.\nVocê deve adicionar um antes de adicionar um estudante");
+							listarProfs();
+							System.out.print("Digite o codigo do professor desejado: ");
+							j = user.nextInt();
+							projetos[opcao].addProfessor(professores.get(j));
+							System.out.println("Professor associado ao projeto " + projetos[opcao].getTitulo() + ".");							
+						}else if(professores.isEmpty()){
+							System.out.println("Não há professores cadastrados.");
+							
+						}
+						
 					} else {
 						System.out.print("1: Alocar Professor\n2: Alocar Aluno\nDigite a opção desejada: ");
 						i = user.nextInt();
@@ -414,6 +421,79 @@ public class Main {
 
 	}
 
+	public static int entrada() throws InputMismatchException {
+		menu();
+		System.out.print("Digite a opção desejada: ");
+		i = user.nextInt();
+		return i;
+	}
+
+	public static void process() {
+
+		boolean ready = false;
+		while (!ready) {
+			try{
+				opcao = entrada();
+				switch (opcao) {
+				case 1:
+					adicionarProjeto();
+					break;
+				case 2:
+					adicionarColaborador();
+					break;
+				case 3:
+					editarProj();
+					break;
+
+				case 4:
+					System.out.println("Colaboradores no sistema.");
+					listarProfs();
+					listarEstu();
+					break;
+				case 5:
+					projDetalhados();
+					break;
+				case 6:
+					adicionarPublicacao();
+					break;
+				case 7:
+					listarPublic();
+					break;
+				case 8:
+					adicionarOrien();
+					break;
+				case 9:
+					colaboradores();
+					break;
+				case 10:
+					relatorio();
+					break;
+				default:
+					System.out.println("Opção inválida.");
+					break;
+				}
+				ready = true;
+			}catch (Exception e) {
+
+				System.out.println("\nVocê não digitou um número. Ação cancelada.\n");
+				user.nextLine();
+
+			}
+
+		}
+	}
+	public static void menu(){
+		System.out.println("------------------------------------------");
+		System.out.println("1: Adicionar um Projeto\n2: Associar Colaboradores ao sistema");
+		System.out.println("3: Edição de projetos de pesquisa\n4: Colaboradores cadastrados");
+		System.out.println(
+				"5: Projetos cadastrados\n6: Adicionar uma publicação\n7: Publicações cadastradas\n8: Orientação\n9: Colaboradores detalhados\n10: Relatório");
+		System.out.print("------------------------------------------\n");
+
+		
+		
+	}
+
 	public static Projeto[] projetos = new Projeto[100];
 	public static Scanner user = new Scanner(System.in);
 	static int quant = 0, i, j;
@@ -424,56 +504,8 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		while (opcao != 12) {
-			System.out.println("------------------------------------------");
-			System.out.println("1: Adicionar um Projeto\n2: Associar Colaboradores ao sistema");
-			System.out.println("3: Edição de projetos de pesquisa\n4: Colaboradores cadastrados");
-			System.out.println(
-					"5: Projetos cadastrados\n6: Adicionar uma publicação\n7: Publicações cadastradas\n8: Orientação\n9: Colaboradores detalhados");
-			System.out.print("------------------------------------------\n");
-
-			System.out.print("Digite a opção desejada: ");
-			opcao = user.nextInt();
-			switch (opcao) {
-			case 1:
-				adicionarProjeto();
-				break;
-			case 2:
-				adicionarColaborador();
-				break;
-			case 3:
-				editarProj();
-				break;
-
-			case 4:
-				System.out.println("Colaboradores no sistema.");
-				listarProfs();
-				listarEstu();
-				break;
-			case 5:
-				projDetalhados();
-				break;
-			case 6:
-				adicionarPublicacao();
-				break;
-			case 7:
-				listarPublic();
-				break;
-			case 8:
-				adicionarOrien();
-				break;
-			case 9:
-				colaboradores();
-				break;
-			case 10: 
-				relatorio();
-				break;
-			default:
-				System.out.println("Opção inválida.");
-				break;
-
-			}
-
+		while (opcao != 11) {			
+			process();			
 		}
 
 	}
