@@ -153,6 +153,17 @@ public class Main {
 		System.out.println("Projeto adicionado com sucesso.");
 		quant++;
 	}
+	public static void ordenarProjetoData(){
+		for(i = 1; i < quant; i++){
+			for(j = 0; j < quant - 1; j++){
+				if(projetos[j].getDataTerminoInt() < projetos[j+1].getDataTerminoInt()){
+					Projeto auxx = projetos[j+1];
+					projetos[j+1] = projetos[j];
+					projetos[j] = auxx;
+				}
+			}
+		}
+	}
 
 	public static void colaboradores() {
 		System.out.println("Colaboradores");
@@ -437,6 +448,7 @@ public class Main {
 				switch (opcao) {
 				case 1:
 					adicionarProjeto();
+					ordenarProjetoData();
 					break;
 				case 2:
 					adicionarColaborador();

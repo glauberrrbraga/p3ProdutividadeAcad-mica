@@ -54,6 +54,9 @@ public class Projeto {
 	public String getDataTermino() {
 		return anoTermino;
 	}
+	public int getDataTerminoInt(){
+		return Integer.parseInt(anoTermino);
+	}
 
 	public void setDataInicio(String dataInicio) {
 		this.anoInicio = dataInicio;
