@@ -94,7 +94,7 @@ public class Main {
 				System.out.println("Não há professores cadastrados no projeto.");
 			} else {
 				System.out.println("---Professores cadastrados desse projeto---");
-				
+
 				for (j = 0; j < projetos[i].getProfParticipantes().size(); j++) {
 					System.out.println("Nome: " + projetos[i].getProfParticipantes().get(j).getNome() + "\nEmail: "
 							+ projetos[i].getProfParticipantes().get(j).getEmail());
@@ -135,11 +135,12 @@ public class Main {
 		System.out.print("Digite o titulo do projeto: ");
 		projetos[quant].setTitulo(user.nextLine());
 		projetos[quant].setTitulo(user.nextLine());
-		System.out.print("Digite a data de incio do projeto, no formato (dd/MM/aaaa): ");
-		projetos[quant].setDataInicio(user.nextLine());
-		System.out.print("Digite a data de termino do projeto, no formato (dd/MM/aaaa): ");
-		projetos[quant].setDataTermino(user.nextLine());
+		System.out.print("Digite o ano de inicio do projeto: ");
+		projetos[quant].setDataInicio(user.nextInt());
+		System.out.print("Digite o ano de termino do projeto: ");
+		projetos[quant].setDataTermino(user.nextInt());
 		System.out.print("Digite a agência financiadora do projeto: ");
+		projetos[quant].setFinanciadora(user.nextLine());
 		projetos[quant].setFinanciadora(user.nextLine());
 		System.out.print("Digite o valor financiado: ");
 		projetos[quant].setValorFinanciado(user.nextDouble());
@@ -150,8 +151,85 @@ public class Main {
 		projetos[quant].setDescricao(user.nextLine());
 		System.out.println("Nenhum aluno/professor esta associado ao projeto.");
 		System.out.println("Projeto adicionado com sucesso.");
-		System.out.println("----------------------------------------------------");
 		quant++;
+	}
+
+	public static void colaboradores() {
+		System.out.println("Colaboradores");
+		System.out.println("1: Estudantes\n2: Professores\nDigite a opção desejada: ");
+		opcao = user.nextInt();
+		if (opcao == 1) {
+			if (listarEstu()) {
+				System.out.print("Digite o codigo do estudante desejado: ");
+				j = user.nextInt();
+				System.out.println(estudantes.get(j).getNome());
+				System.out.println(estudantes.get(j).getEmail());
+				System.out.println("Projetos que o aluno é associado");
+				for (i = 0; i < quant; i++) {
+					if (projetos[i].getEstParticipantes().contains(estudantes.get(j))
+							&& projetos[i].getStatus() == "Em Andamento") {
+						System.out.println("Titulo: " + projetos[i].getTitulo());
+					}
+				}
+				if (!publicacoes.isEmpty()) {
+					System.out.println("Publicações que o aluno é associado");
+
+					for (i = 0; i < quant; i++) {
+						if (publicacoes.get(i).getAutores().contains(estudantes.get(j))) {
+							System.out.println("Titulo: " + publicacoes.get(i).getTitulo());
+						}
+					}
+				}else{
+					System.out.println("Esse estudante não colaborou em nenhuma publicação");
+				}
+			}
+		} else if (opcao == 2) {
+			if (listarProfs()) {
+				System.out.print("Digite o codigo do professor desejado: ");
+				j = user.nextInt();
+				System.out.println(professores.get(j).getNome());
+				System.out.println(professores.get(j).getEmail());
+				System.out.println("Projetos que o professor é associado");
+				for (i = 0; i < quant; i++) {
+					if (projetos[i].getProfParticipantes().contains(professores.get(j))
+							&& projetos[i].getStatus() == "Em Andamento") {
+						System.out.println("Titulo: " + projetos[i].getTitulo());
+					}
+				}
+			}
+
+		}
+
+	}
+	public static void relatorio(){
+		System.out.println("Número de colaboradores: " + (estudantes.size() + professores.size()));
+		System.out.println("Número total de projetos: " + (quant + 1));
+		j = 0;
+		for(i = 0; i < quant; i++){
+			if(projetos[i].getStatus() == "Concluido"){
+				j++;
+			}
+		}
+		System.out.println("Número de projetos concluidos: " + j);
+		
+		j = 0;
+		for(i = 0; i < quant; i++){
+			if(projetos[i].getStatus() == "Em Andamento"){
+				j++;
+			}
+		}
+		System.out.println("Número de projetos 'Em Andamento': " + j);
+		
+		j = 0;
+		for(i = 0; i < quant; i++){
+			if(projetos[i].getStatus() == "Em Elaboração"){
+				j++;
+			}
+		}
+		System.out.println("Número de projetos 'Em Elaboração': " + j);
+
+		System.out.println("Número total de publicações academicas: " + publicacoes.size());
+		
 	}
 
 	public static void editarProj() {
@@ -200,7 +278,9 @@ public class Main {
 							System.out.println("Não há professores cadastrados.");
 						} else if (i == 2 && !estudantes.isEmpty()) {
 							listarEstu();
+							System.out.print("Digite o codigo do estudante desejado: ");
 							j = user.nextInt();
+
 							if (projetos[opcao].getEstParticipantes().contains(estudantes.get(j))) {
 								System.out.println("Esse estudante já esta alocado neste projeto.");
 							} else {
@@ -260,8 +340,9 @@ public class Main {
 						} else {
 							projetos[opcao].addPublicacoes(publicacoes.get(j));
 							System.out.println("Publicação associada ao projeto com sucesso.");
-							
-							if (!projetos[opcao].getEstParticipantes().contains(publicacoes.get(j).getAutores().get(0))) {
+
+							if (!projetos[opcao].getEstParticipantes()
+									.contains(publicacoes.get(j).getAutores().get(0))) {
 								System.out.println("Todos os autores da publicação agora fazem parte do projeto.");
 								projetos[opcao].addEstudante(publicacoes.get(j).getAutores().get(0));
 							}
@@ -348,7 +429,7 @@ public class Main {
 			System.out.println("1: Adicionar um Projeto\n2: Associar Colaboradores ao sistema");
 			System.out.println("3: Edição de projetos de pesquisa\n4: Colaboradores cadastrados");
 			System.out.println(
-					"5: Projetos cadastrados\n6: Adicionar uma publicação\n7: Listar orientações\n8: Adicionar uma orientação");
+					"5: Projetos cadastrados\n6: Adicionar uma publicação\n7: Publicações cadastradas\n8: Orientação\n9: Colaboradores detalhados");
 			System.out.print("------------------------------------------\n");
 
 			System.out.print("Digite a opção desejada: ");
@@ -380,6 +461,12 @@ public class Main {
 				break;
 			case 8:
 				adicionarOrien();
+				break;
+			case 9:
+				colaboradores();
+				break;
+			case 10: 
+				relatorio();
 				break;
 			default:
 				System.out.println("Opção inválida.");

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Projeto {
 	private String titulo;
-	private String dataInicio;
-	private String dataTermino;
+	private int anoInicio;
+	private int anoTermino;
 	private String financiadora;
 	private double valorFinanciado;
 	private String objetivo;
@@ -47,20 +47,20 @@ public class Projeto {
 		return profParticipantes;
 	}
 
-	public String getDataInicio() {
-		return dataInicio;
+	public int getDataInicio() {
+		return anoInicio;
 	}
 
-	public String getDataTermino() {
-		return dataTermino;
+	public int getDataTermino() {
+		return anoTermino;
 	}
 
-	public void setDataInicio(String dataInicio) {
-		this.dataInicio = dataInicio;
+	public void setDataInicio(int dataInicio) {
+		this.anoInicio = dataInicio;
 	}
 
-	public void setDataTermino(String dataTermino) {
-		this.dataTermino = dataTermino;
+	public void setDataTermino(int dataTermino) {
+		this.anoTermino = dataTermino;
 	}
 
 	public String getDescricao() {
